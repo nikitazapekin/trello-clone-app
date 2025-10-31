@@ -171,6 +171,10 @@ export const CardImagePreview = styled.div`
   max-width: 200px;
   margin: 0 auto;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
   @media screen and (max-width: 1240px) {
     max-width: 100%;
     width: 100%;
@@ -182,8 +186,8 @@ export const CardImagePreview = styled.div`
     object-fit: cover;
   }
 
-  @media (max-width: 768px) {
+ /*  @media (max-width: 768px) {
     margin: -10px -10px 6px -10px;
     max-height: 80px;
-  }
+  } */
 `;

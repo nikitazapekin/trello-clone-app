@@ -1,8 +1,9 @@
  
 import React from 'react';
+import { Card } from '@components/Card';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Card } from '@components/Card';
+
 import type { Card as CardType } from '../../types';
 
 interface SortableCardProps {

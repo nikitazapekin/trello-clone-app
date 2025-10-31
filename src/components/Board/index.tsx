@@ -1,45 +1,45 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect,useState } from 'react';
+import { CardModal } from '@components/Modal';
 import {
+  closestCorners,
   DndContext,
   DragOverlay,
-  closestCorners,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { Column } from '../Column';
-import { CardModal } from '@components/Modal';
-import type { Card as CardType, Column as ColumnType, BoardData, CardHistory } from '../../types';
-import { defaultColumns } from './constants';
+
 import { createDragHandlers } from '../../helpers/DragUtils';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import type { BoardData, Card as CardType, CardHistory,Column as ColumnType } from '../../types';
+import { Column } from '../Column';
+
+import { defaultColumns } from './constants';
 import { 
-  CardsWrapper,
+  AddColumnButton,
+  BoardButton,
   BoardContainer,
+  BoardInput,
   BoardManagerContainer,
   BoardManagerHeader,
-  CurrentBoardInfo,
-  BoardSelectContainer,
   BoardSelect,
-  CreateBoardContainer,
-  BoardInput,
-  BoardButton,
+  BoardSelectContainer,
   CancelButton,
+  CardsWrapper,
+  CreateBoardContainer,
+  CurrentBoardInfo,
   DeleteBoardButton,
- 
-  MultiSelectToolbar,
-  MultiSelectButton,
-  SelectedCount,
   DeleteSelectedButton,
-  MoveToContainer,
-  MoveToButton,
-  AddColumnButton,
   DragOverlayCard,
+  DragOverlayDescription,
   DragOverlayTitle,
-  DragOverlayDescription
-} from './styled';
+  MoveToButton,
+  MoveToContainer,
+  MultiSelectButton,
+  MultiSelectToolbar,
+  SelectedCount} from './styled';
 
 interface BoardType {
   id: string;
@@ -179,6 +179,7 @@ export const Board: React.FC = () => {
   
   useEffect(() => {
     const currentBoardData = savedBoardData[currentBoardId];
+
     if (currentBoardData) {
       setColumns(currentBoardData.columns || defaultColumns);
       setCards(currentBoardData.cards || []);
@@ -186,6 +187,7 @@ export const Board: React.FC = () => {
       setColumns(defaultColumns);
       setCards([]);
     }
+
     setSelectedCards(new Set());
     setIsMultiSelectMode(false);
   }, [currentBoardId]); 
@@ -249,11 +251,14 @@ export const Board: React.FC = () => {
 
     
       const updatedBoards = savedBoards.filter(board => board.id !== boardId);
+
       setSavedBoards(updatedBoards);
         
       setSavedBoardData(prev => {
         const newData = { ...prev };
+
         delete newData[boardId];
+
         return newData;
       });
 
@@ -285,11 +290,13 @@ export const Board: React.FC = () => {
     if (isMultiSelectMode) {
       setSelectedCards(prev => {
         const newSelected = new Set(prev);
+
         if (newSelected.has(card.id)) {
           newSelected.delete(card.id);
         } else {
           newSelected.add(card.id);
         }
+
         return newSelected;
       });
     } else {
@@ -339,12 +346,14 @@ export const Board: React.FC = () => {
         if (JSON.stringify(oldCard.labels) !== JSON.stringify(newCard.labels)) {
           const oldLabels = oldCard.labels.join(', ') || 'нет';
           const newLabels = newCard.labels.join(', ') || 'нет';
+
           changes.push(`Метки: ${oldLabels} → ${newLabels}`);
         }
 
         if (JSON.stringify(oldCard.checklists) !== JSON.stringify(newCard.checklists)) {
           const oldCount = oldCard.checklists.length;
           const newCount = newCard.checklists.length;
+
           if (newCount > oldCount) {
             changes.push(`Добавлен чек-лист: "${newCard.checklists[newCount - 1].title}"`);
           } else if (newCount < oldCount) {
@@ -357,6 +366,7 @@ export const Board: React.FC = () => {
         if (JSON.stringify(oldCard.images) !== JSON.stringify(newCard.images)) {
           const oldCount = oldCard.images.length;
           const newCount = newCard.images.length;
+
           if (newCount > oldCount) {
             changes.push(`Добавлено изображение: "${newCard.images[newCount - 1].name}"`);
           } else if (newCount < oldCount) {
@@ -382,6 +392,7 @@ export const Board: React.FC = () => {
 
         return newCard;
       }
+
       return card;
     }));
   }, []);
@@ -401,6 +412,7 @@ export const Board: React.FC = () => {
           timestamp: new Date().toISOString()
         }]
       };
+
       setCards(prev => [...prev, newCard]);
     } else if (modalState.card && modalState.mode === 'edit') {
       handleUpdateCard(modalState.card.id, {
@@ -408,6 +420,7 @@ export const Board: React.FC = () => {
         updatedAt: new Date().toISOString()
       });
     }
+
     setModalState({ isOpen: false, card: null, mode: 'view' });
   }, [modalState, handleUpdateCard]);
 
@@ -434,6 +447,7 @@ export const Board: React.FC = () => {
       if (col.id === columnId) {
         return { ...col, title: newTitle };
       }
+
       return col;
     }));
   }, []);
@@ -446,11 +460,13 @@ export const Board: React.FC = () => {
   const handleToggleCardSelection = useCallback((cardId: string) => {
     setSelectedCards(prev => {
       const newSelected = new Set(prev);
+
       if (newSelected.has(cardId)) {
         newSelected.delete(cardId);
       } else {
         newSelected.add(cardId);
       }
+
       return newSelected;
     });
   }, []);
@@ -462,6 +478,7 @@ export const Board: React.FC = () => {
       } else {
         setSelectedCards(new Set());
       }
+
       return !prev;
     });
   }, []);
@@ -492,6 +509,7 @@ export const Board: React.FC = () => {
           history: [...(card.history || []), moveHistory]
         };
       }
+
       return card;
     }));
     setSelectedCards(new Set());
@@ -503,7 +521,9 @@ export const Board: React.FC = () => {
 
   const getCardHistory = useCallback((cardId?: string) => {
     if (!cardId) return [];
+
     const card = cards.find(c => c.id === cardId);
+
     return card?.history || [];
   }, [cards]);
 
@@ -562,6 +582,7 @@ export const Board: React.FC = () => {
         <CardsWrapper>
           {columns.map(column => {
             const columnCards = cards.filter(card => card.columnId === column.id);
+
             return (
               <Column
                 key={column.id}
@@ -587,6 +608,7 @@ export const Board: React.FC = () => {
                   cardIds: [],
                   order: columns.length + 1
                 };
+
                 setColumns(prev => [...prev, newColumn]);
               }}
             >

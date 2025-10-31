@@ -1,5 +1,6 @@
+import type { DragEndEvent,DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
+
 import type { Card, Column } from '../types';
 
 export interface DragHandlers {
@@ -33,9 +34,11 @@ export const createDragHandlers = (
     const overId = over.id as string;
  
     const activeCard = cards.find(c => c.id === activeId);
+
     if (!activeCard) return;
  
     const overCard = cards.find(c => c.id === overId);
+
     if (overCard) {
       const overColumnId = overCard.columnId;
       

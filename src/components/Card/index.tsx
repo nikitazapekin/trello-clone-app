@@ -1,17 +1,18 @@
  
-import React, { useRef, useCallback } from 'react';
+import React, { useCallback,useRef } from 'react';
+
+import type { Card as CardType } from '../../types';
+
 import { 
-  CardContainer, 
-  CardTitle, 
-  CardDescription, 
-  CardLabels,
-  CardLabel,
-  CardBadges,
   CardBadge,
+  CardBadges,
+  CardCheckbox,
+  CardContainer, 
+  CardDescription, 
   CardImagePreview,
-  CardCheckbox
-} from './styled';
-import { Card as CardType } from '../../types';
+  CardLabel,
+  CardLabels,
+  CardTitle} from './styled';
 
 interface CardProps {
   card: CardType;
@@ -96,7 +97,7 @@ export const Card: React.FC<CardProps> = ({
       
       {card.images.length > 0 && (
         <CardImagePreview>
-          <img src={card.images[0].url} alt={card.images[0].name} />
+          <img src={card.images[0].url} alt={card.images[0].name}  />
         </CardImagePreview>
       )}
       
@@ -137,5 +138,6 @@ const getLabelColor = (label: string): string => {
     'исправлено': '#1890ff',
     'тест': '#722ed1'
   };
+
   return colors[label] || '#05089b';
 };

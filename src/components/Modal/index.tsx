@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import type { Card, CardHistory, Checklist, Image } from "../../types";
+
 import ModalUtils from "../../helpers/ModalUtils";
+import type { Card, CardHistory, Checklist, Image } from "../../types";
+
 import {
   Button,
   ButtonGroup,
@@ -24,14 +26,14 @@ import {
   LabelList,
   ModalContent,
   ModalHeader,
+  ModalOverlay,
   ModalTitle,
+  NoImages,
   Tab,
   TabList,
   TabPanel,
   Tabs,
-  ModalOverlay,
   TextArea,
-  NoImages,
 } from "./styled";
 
 interface CardModalProps {
@@ -107,8 +109,10 @@ export const CardModal: React.FC<CardModalProps> = ({
         images: images || [],
         history: card.history || [],
       };
+
       onUpdate(card.id, updatedCard);
     }
+
     onClose();
   };
   const handleAddLabel = () => {
