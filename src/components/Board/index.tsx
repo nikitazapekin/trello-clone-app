@@ -190,7 +190,7 @@ export const Board: React.FC = () => {
 
     setSelectedCards(new Set());
     setIsMultiSelectMode(false);
-  }, [currentBoardId]); 
+  }, [currentBoardId, savedBoardData]); 
 
   useEffect(() => {
     if (!currentBoardId) return;
@@ -216,7 +216,7 @@ export const Board: React.FC = () => {
           : board
       ));
     }
-  }, [columns, cards, currentBoardId, setSavedBoardData, setSavedBoards]); 
+  }, [columns, cards, currentBoardId, savedBoardData, setSavedBoardData, setSavedBoards ]); 
   
   const handleBoardSelect = useCallback((boardId: string) => {
     setCurrentBoardId(boardId);
