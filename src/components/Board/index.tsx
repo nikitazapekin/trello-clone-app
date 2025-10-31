@@ -28,7 +28,7 @@ import {
   BoardButton,
   CancelButton,
   DeleteBoardButton,
-  BoardInfoText,
+ 
   MultiSelectToolbar,
   MultiSelectButton,
   SelectedCount,
